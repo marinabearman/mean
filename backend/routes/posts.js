@@ -16,7 +16,7 @@ const FILE_SIZE = {
 }
 
 const FILE_SIZE_MAX = FILE_SIZE.production;
-const limits =  {
+const limits = {
   fileSize: FILE_SIZE_MAX
 }
 
@@ -44,7 +44,7 @@ const storage = multer.diskStorage({
 var upload = multer({ storage: storage, limits }).single("image");
 router.post(
   "",
- upload,
+  upload,
   (req, res, next) => {
     const url = req.protocol + "://" + req.get("host");
     const post = new Post({
@@ -67,13 +67,13 @@ router.post(
 
 router.put(
   "/:id",
- upload,
+  upload,
   (req, res, next) => {
     let imagePath = req.body.imagePath;
     if (req.file) {
       const url = req.protocol + "://" + req.get("host");
       imagePath = url + "/images/" + req.file.filename;
-     
+
     }
     const post = new Post({
       _id: req.body.id,
@@ -89,10 +89,31 @@ router.put(
 );
 
 router.get("", (req, res, next) => {
-  Post.find().then(documents => {
+  //  console.log(req.query);
+  //Create query parameters
+  //localhost:3000/api/posts?pageSize=2&page=1;
+  // + converts to numbers
+
+  const pageSize = +req.query.pagesize;
+  const currentPage = +req.query.page;
+  const postQuery = Post.find();
+
+  let fetchedPosts;
+
+  if (pageSize && currentPage) {
+
+    postQuery.skip(pageSize * (currentPage - 1)).limit(pageSize);
+  }
+
+  postQuery.then(documents => {
+    fetchedPosts = documents;
+    return Post.count();
+  })
+  .then(count => {
     res.status(200).json({
       message: "Posts fetched successfully!",
-      posts: documents
+      posts: fetchedPosts,
+      maxPosts: count
     });
   });
 });
