@@ -13,7 +13,10 @@ export class PostsService {
   //state 
   private postsUpdated = new Subject<{posts: Post[], postCount: number}>();
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(
+    private http: HttpClient, 
+    private router: Router
+  ) { }
 
   // Used pipe operator to transform data response
  
