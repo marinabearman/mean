@@ -98,7 +98,7 @@ exports.updatePost = (req, res, next) => {
       creator: req.userData.userid
     });
     //console.log(post);
-    Post.updateOne({ _id: req.params.id, creator: req.userD
+    Post.updateOne({ _id: req.params.id, creator: req.userData
     .userId }, post).then(result => {
       if (result.nModified > 0) {
         res.status(200).json({ message: "Update successful!" });
