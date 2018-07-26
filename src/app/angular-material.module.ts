@@ -4,10 +4,10 @@ import {
     MatCardModule,
     MatButtonModule,
     MatToolbarModule,
-    MatProgressSpinnerModule,
     MatExpansionModule,
     MatPaginatorModule,
-    MatDialogModule
+    MatDialogModule,
+    MatProgressSpinnerModule
   } from "@angular/material";
 
 @NgModule({
